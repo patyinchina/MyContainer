@@ -41,7 +41,7 @@ namespace mycontainer {
 
 		T& operator [](const size_t n) {
 			size_t size=static_cast<T>(end - begin);
-			if (n > size) assert(n > size);
+			if (n >= size) assert(n >= size); // ´ýÑÐ¾¿assertº¯Êý !!
 			return *(begin + n);
 
 		}

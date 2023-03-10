@@ -11,9 +11,9 @@ int main()
 {
     int n = 2;
     vector<int> a(n);
-    cout << a[0];
-
-
+    cout << a[3] << " ";
+    vector<int> b(1);
+    cout << b[0] << " ";
 }
 
 // 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单
