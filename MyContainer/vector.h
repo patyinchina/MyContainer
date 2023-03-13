@@ -2,8 +2,11 @@
 #define MYCONTAINER_VECTOR_H_
 
 #include<assert.h>
+#include<iostream>
 #include "myallocator.h"
 #include "construct.h"
+using std::cout;
+using std::endl;
 
 namespace mycontainer {
 
@@ -11,13 +14,14 @@ namespace mycontainer {
 	class vector{
 	public:
 
-		// 构造、复制、移动、析构函数
+		// ①构造、复制、移动、析构函数
+		// 无指定
 		vector() {
 			begin = myallocator<T>::allocate(); //分配内存
 			end = begin;
 		}
-
-		explicit vector(size_t n) {
+		// 指定大小，初始值默认为0
+		explicit vector(size_t n) { //explicit用于类内的单参数构造函数前面，防止类构造函数的隐式自动转换
 			begin = myallocator<T>::allocate(n); //分配内存
 			end = begin + n;
 			auto c = begin;
@@ -27,8 +31,8 @@ namespace mycontainer {
 				n--;
 			}
 		}
-
-		vector(size_t n, const T& value) {
+		//指定大小和初始值
+		vector(size_t n, const T& value) { 
 			begin = myallocator<T>::allocate(n); //分配内存
 			end = begin + n;
 			auto c = begin;
@@ -38,40 +42,85 @@ namespace mycontainer {
 				n--;
 			}
 		}
-
-		T& operator [](const size_t n) {
-			size_t size=static_cast<T>(end - begin);
-			if (n >= size) assert(n >= size); // 待研究assert函数 !!
-			return *(begin + n);
-
+		//通过已有数组构造
+		vector(T* first, T* last) { 
+			size_t len = 0;
+			auto now = first;
+			while (now != last) {
+				now++;
+				len++;
+			}
+			begin = myallocator<T>::allocate(len);
+			end = begin + len;
+			auto c = begin;
+			for (auto i = first; i != last; i++) {
+				*c = *i;
+				c++;
+			}
 		}
+		//通过已有vector构造
+		vector(const vector& copyvector) {
+			size_t len = 0;
+			auto now=copyvector.begin;
+			while (now != copyvector.end) {
+				now++;
+				len++;
+			}
+			begin = myallocator<T>::allocate(len);
+			end = begin + len;
+			auto c = begin;
+			for (auto i = copyvector.begin; i != copyvector.end; i++) {
+				*c = *i;
+				c++;
+			}
+		}
+		//移动构造(未完成)
+
+
+		//序列构造(未完成)
+
+
+		//赋值构造(未完成)
+
+
+		//析构函数(未完成)
+
+
+		// ②访问元素
+		// []访问
+		T& operator [](const size_t n) { //重载 []
+			size_t size=static_cast<T>(end - begin);
+			if (n >= size) {
+				std::cout << "超出索引范围" << std::endl;
+			} 
+			assert(n < size); // 表达式为false则退出运行
+			return *(begin + n);
+		}
+		// at()访问(未完成)
+		T& at(size_t index) {
+			
+		}
+		// front()访问
+		T& front() {
+			return *begin;
+		}
+		// back()访问(未完成)
+
+
+		// data()访问(未完成)
+
+
 
 	private:
 		T* begin;
 		T* end;
-		
-
-
-
-
-
+	
 
 	};
 
 
-	
-	
-
-
-
-
-
-
 
 }
-
-
-
 
 
 #endif //MYCONTAINER_VECTOR_H_

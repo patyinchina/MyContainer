@@ -5,15 +5,25 @@
 #include "vector.h"
 
 using std::cout;
+using std::endl;
 using namespace mycontainer;
 
 int main()
 {
-    int n = 2;
-    vector<int> a(n);
-    cout << a[3] << " ";
-    vector<int> b(1);
-    cout << b[0] << " ";
+    int n = 10;
+    int array[] = {5,4,3,2,1};
+    vector<int> a1;
+    vector<int> a2(n);
+    vector<int> a3(n, 2);
+    vector<int> a4(array, array + 5);
+    vector<int> a5(a2);
+    
+    
+   
+    cout << a4.at(0) << std::endl;
+    cout << a5[1] << ' ';
+
+
 }
 
 // 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单
