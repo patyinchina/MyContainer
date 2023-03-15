@@ -2,6 +2,7 @@
 #define MYCONTAINER_MYALLOCATOR_H_
 
 //myallocator 负责处理内存的分配和释放
+#include "construct.h"
 
 namespace mycontainer {
 	template<class T>

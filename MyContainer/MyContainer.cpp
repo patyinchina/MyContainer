@@ -15,13 +15,12 @@ int main()
     vector<int> a1;
     vector<int> a2(n);
     vector<int> a3(n, 2);
-    vector<int> a4(array, array + 5);
+    vector<int> a4(array, array + 2);
     vector<int> a5(a2);
-    
+    int* p = a4.data();
     
    
-    cout << a4.at(0) << std::endl;
-    cout << a5[1] << ' ';
+    cout << a4.capacity() << endl;
 
 
 }

@@ -142,6 +142,7 @@
     <ClCompile Include="MyContainer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="algorithm_basic.h" />
     <ClInclude Include="construct.h" />
     <ClInclude Include="myallocator.h" />
     <ClInclude Include="vector.h" />

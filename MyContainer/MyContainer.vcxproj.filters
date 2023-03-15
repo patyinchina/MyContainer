@@ -29,5 +29,8 @@
     <ClInclude Include="construct.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="algorithm_basic.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
