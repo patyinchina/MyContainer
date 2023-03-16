@@ -15,12 +15,16 @@ int main()
     vector<int> a1;
     vector<int> a2(n);
     vector<int> a3(n, 2);
-    vector<int> a4(array, array + 2);
+    vector<int> a4(array, array + 5);
     vector<int> a5(a2);
+    vector<int> a7(std::move(a3));
     int* p = a4.data();
+    vector<int> a6,a8;
+    a6 = a4;
+    a8 = std::move(a7);
+
+    cout << a8.at(3);
     
-   
-    cout << a4.capacity() << endl;
 
 
 }

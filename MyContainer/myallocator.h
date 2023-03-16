@@ -16,9 +16,16 @@ namespace mycontainer {
 		static void deallocate(T* p);
 		static void deallocate(T* p, size_t n);
 	
+		//在已分配的内存空间上构造对象
+		static void construct(T* p);
+		static void construct(T* p, const T& value);
+		//static void construct(T* p, T&& value); (未完成)
 
-	
 
+
+		//析构对象
+		static void destroy(T* p);
+		static void destroy(T* first, T* last);
 
 	};
 
@@ -51,14 +58,32 @@ namespace mycontainer {
 		::operator delete(p); //释放指向的内存空间
 	}
 
-}
+	//myallocator<T>::construct(T* p)定义
+	template<class T>
+	void myallocator<T>::construct(T* p) {
+		mycontainer::construct(p);
+	}
+
+	//myallocator<T>::construct(T* p, const T& value)定义
+	template<class T>
+	void myallocator<T>::construct(T* p, const T& value) {
+		mycontainer::construct(p, value);
+	}
+
+	//myallocator<T>::deconstruct(T* p)定义
+	template<class T>
+	void myallocator<T>::destroy(T* p) {
+		mycontainer::destroy(p);
+	}
+
+	//myallocator<T>::deconstruct(T* first, T* last)定义
+	template<class T>
+	void myallocator<T>::destroy(T* first_, T* last_) {
+		mycontainer::destroy(first_, last_);
+	}
 
 
-
-
-
-
-
+}//namespace mycontainer
 
 
 

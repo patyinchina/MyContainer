@@ -1,5 +1,5 @@
-#ifndef MYTINYSTL_ALGORITHM_BASIC_H_
-#define MYTINYSTL_ALGORITHM_BASIC_H_
+#ifndef MYCONTAINER_ALGORITHM_BASIC_H_
+#define MYCONTAINER_ALGORITHM_BASIC_H_
 
 #include <cstring>
 namespace mycontainer {
@@ -19,11 +19,13 @@ const T& max(const T& leftele, const T& rightele) {
 	return leftele > rightele ? leftele : rightele;
 }
 
-
-
+template<class T>
+const T& min(const T& leftele, const T& rightele) {
+	return leftele < rightele ? leftele : rightele;
 }
 
 
+} //namespace mycontainer
 
 
-#endif
+#endif //MYCONTAINER_ALGORITHM_BASIC_H_
