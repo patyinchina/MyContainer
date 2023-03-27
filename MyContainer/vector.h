@@ -1,7 +1,9 @@
 #ifndef MYCONTAINER_VECTOR_H_
 #define MYCONTAINER_VECTOR_H_
 
-#include<assert.h>
+// 暂无异常处理
+
+#include<assert.h> // debug时报告错误的头文件
 #include<iostream>
 #include "algorithm_basic.h"
 #include "iterator.h"
@@ -11,9 +13,22 @@ using std::endl;
 
 namespace mycontainer {
 
+	
+
 	template <class T>
 	class vector{
 	public:
+
+		// vector的(嵌套)类型定义
+		//typedef mycontainer::myallocator<T>              allocator_type;
+		//typedef typename allocator_type::value_type      value_type; // typename 告诉编译器是一个类型，而非静态数据成员或成员函数
+		
+		// vector类型定义
+		typedef T  value_type;   
+		typedef T* iterator;
+		typedef T& reference;
+		typedef const T* const_iterator;
+		typedef const T& const_reference;
 
 		//---------------------------①构造、复制、移动、析构函数---------------------------
 		// 无指定
@@ -36,7 +51,7 @@ namespace mycontainer {
 			}
 		}
 		//指定大小和初始值
-		vector(size_t n, const T& value) { 
+		vector(size_t n, const_reference value) {
 			const size_t cap = mycontainer::max<size_t>(n, initial_capacity);
 			begin_ = myallocator<T>::allocate(cap); //分配内存
 			end_ = begin_ + n;
@@ -48,7 +63,7 @@ namespace mycontainer {
 			}
 		}
 		//通过已有数组构造
-		vector(T* first_, T* last_) {
+		vector(iterator first_, iterator last_) {
 			size_t len = mycontainer::length(first_, last_);
 			const size_t cap = mycontainer::max<size_t>(len, initial_capacity);
 			begin_ = myallocator<T>::allocate(cap);
@@ -97,16 +112,17 @@ namespace mycontainer {
 
 		//析构函数
 		~vector() {
-			myallocator<T>::destroy(begin_, end_); //析构对象
-			myallocator<T>::deallocate(begin_, capa_ - begin_); //释放空间
+			destroy_deallocate();
 			begin_ = nullptr;
 			end_ = nullptr;
 			capa_ = nullptr;
 		}
 
+		
+
 		//---------------------------②访问元素---------------------------
 		// []访问
-		T& operator [](const size_t n) { //重载 []
+		reference operator [](const size_t n) { //重载 []
 			size_t size = end_ - begin_;
 			if (n >= size) {
 				std::cout << "超出索引范围" << std::endl;
@@ -115,7 +131,7 @@ namespace mycontainer {
 			return *(begin_ + n);
 		}
 		// at()访问
-		T& at(size_t index) {
+		reference at(size_t index) {
 			size_t size = end_ - begin_;
 			if (index >= size) {
 				std::cout << "超出索引范围" << std::endl;
@@ -128,7 +144,7 @@ namespace mycontainer {
 			return *c;
 		}
 		// front()访问
-		T& front() {
+		reference front() {
 			if (empty()) {
 				std::cout << "vector为空,访问错误" << std::endl;
 			}
@@ -136,7 +152,7 @@ namespace mycontainer {
 			return *begin_;
 		}
 		// back()访问
-		T& back() {
+		reference back() {
 			if (empty()) {
 				std::cout << "vector为空,访问错误" << std::endl;
 			}
@@ -145,7 +161,7 @@ namespace mycontainer {
 		}
 
 		// data()
-		T* data() {
+		iterator data() {
 			if (empty()) {
 				std::cout << "vector为空,访问错误" << std::endl;
 			}
@@ -172,19 +188,257 @@ namespace mycontainer {
 			size_t cap = capa_ - begin_;
 			return cap;
 		}
-		// reserve(size_t n) 预留一定的内存空间（未完成）
+		// reserve(size_t n) 预留一定的内存空间，空间足够时无事发生，空间不足时扩容
+		void reserve(size_t n) {
+			if (capacity() < n) {
+				if (n > max_size()) {
+					std::cout << "请求容量超出限制" << std::endl;
+					assert(n <= max_size());
+				}// 若超出最大容量
+				reallocate_construct(n);
+			}
+		}
 
-		// shrink_to_fit()（未完成）
+		// shrink_to_fit()
+		void shrink_to_fit() {
+			if (end_ < capa_) {
+				// 释放未填充的空间(error)
+				/*
+				myallocator<T>::destroy(end_, capa_); 
+				myallocator<T>::deallocate(end_, capacity() - size()); 
+				capa_ = end_;
+				*/
+				size_t n = size();
+				reallocate_construct(n);
+			}
+		}
+
+		//---------------------------④迭代器---------------------------
+		// 正向迭代器
+		iterator begin() {
+			return begin_;
+		}
+		const_iterator begin() const {
+			return begin_;
+		}
+		iterator end() {
+			return end_;
+		}
+		const_iterator end() const {
+			return end_;
+		}
+		const_iterator cbegin() {
+			return begin_;
+		}
+		const_iterator cend() {
+			return begin_;
+		}
+
+		// 反向迭代器(未完成)
+
+		//---------------------------⑤修改---------------------------
+		// assign(size_t n, const_reference value) 赋n个元素到vector中,并清除vector之前的内容
+		void assign(size_t n, const_reference value) {
+			if (n > capacity()) {
+				
+				
 
 
-		//---------------------------④---------------------------
+
+			}
+
+
+			
+		}
+
+		// insert的三种实现
+		// 在指定位置前插入一个元素value，返回指向这个元素的迭代器
+		iterator insert(iterator position, const_reference value) {
+			if (position >= begin_ && position <= end_) {
+				iterator pos = position;
+				if (end_ < capa_) { // 容量充足
+					if (position == end_) {
+						myallocator<T>::construct(end_, value);
+						end_++;
+					}
+					else {
+						myallocator<T>::construct(end_);
+						mycontainer::move<T, T>(pos, end_, pos + 1);
+						*pos = value;
+						end_++;
+					}
+				}
+				else { // 容量不足
+					size_t n = mycontainer::length(begin_, position);
+					reallocate_construct(capacity()+1);
+					pos = insert(begin_ + n, value);
+				}
+				return pos;
+			}
+			else {
+				std::cout << "插入位置错误" << std::endl;
+				assert(position >= begin_ && position <= end_);
+			}
+		}
+		// 在指定位置前插入n个元素value
+		void insert(iterator position, size_t n, const_reference value) {
+			if (n == 0) {
+				std::cout << "请插入大于1个元素" << std::endl;
+				return ;
+			}
+			if (position >= begin_ && position <= end_) {
+				iterator pos = position;
+				if (end_ + n <= capa_) { // 容量充足
+					if (pos == end_) {
+						auto c = end_;
+						end_ = end_ + n;
+						while (c != end_) {
+							myallocator<T>::construct(c, value);
+							c++;
+						}
+					}
+					else {
+						iterator new_end_ = end_ + n;
+						auto c = end_;
+						while (c != new_end_) {
+							myallocator<T>::construct(c);
+							c++;
+						}
+						mycontainer::move<T, T>(pos, end_, pos + n);
+						for (auto i = pos; n > 0; i++,n--) {
+							*i = value;
+						}
+						end_ = new_end_;
+					}
+				}
+				else { // 容量不足
+					size_t offset = mycontainer::length(begin_, position);
+					size_t blank = mycontainer::length(end_, capa_);
+					reallocate_construct(capacity() + n - blank);
+					insert(begin_ + offset, n, value);
+				}
+			}
+			else {
+				std::cout << "插入位置错误" << std::endl;
+				assert(position >= begin_ && position <= end_);
+			}
+		}
+		// 在指定位置前插入[first,last)的所有元素
+		void insert(iterator position, iterator first, iterator last) {
+			size_t n = mycontainer::length(first, last);
+			if (n == 0) return;
+			if (position >= begin_ && position <= end_) {
+				iterator pos = position;
+				if (end_ + n <= capa_) { // 容量充足
+					if (pos == end_) {
+						mycontainer::move<T, T>(first, last, end_);
+						end_ = end_ + n;
+					}
+					else {
+						iterator new_end_ = end_ + n;
+						mycontainer::move<T, T>(pos, end_, pos + n);
+						auto c = first;
+						for (auto i = pos; n > 0; i++, n--) {
+							*i = *c; c++;
+						}
+						end_ = new_end_;
+					}
+				}
+				else { // 容量不足
+					size_t offset = mycontainer::length(begin_, position);
+					size_t blank = mycontainer::length(end_, capa_);
+					reallocate_construct(capacity() + n - blank);
+					insert(begin_ + offset, first, last);
+				}
+			}
+			else {
+				std::cout << "插入位置错误" << std::endl;
+				assert(position >= begin_ && position <= end_);
+			}
+		}
+
+		// erase的两种实现
+		// erase(iterator position)  删除特定位置的元素，后面元素往前挪，析构最后一个位置，返回删除位置
+		iterator erase(iterator position) {
+			if (position >= begin_ && position < end_) {
+				iterator pos = position;
+				mycontainer::move<T, T>(pos + 1, end_, pos); //调整元素位置
+				myallocator<T>::destroy(end_ - 1);
+				end_--;
+				return pos;
+			}
+			else {
+				std::cout << "删除位置错误" << std::endl;
+				assert(position >= begin_ && position < end_);
+			}
+		}
+		// erase(iterator first,iterator last)  删除特定位置的元素,返回删除的初始位置
+		iterator erase(iterator first, iterator last) {
+			if (first >= begin_ && last <= end_ && !(last < first)) {
+				size_t n = first - begin();
+				iterator tmp = mycontainer::move<T, T>(last, end_, first);
+				myallocator<T>::destroy(tmp, end_);
+				end_ = end_ - (last - first);
+				return first;
+			}
+			else {
+				std::cout << "删除区间错误" << std::endl;
+				assert(first >= begin_ && last <= end_ && !(last < first));
+			}
+		}
+
+		// clear() 移除所有元素，capacity不变
+		void clear() {
+			erase(begin_,end_);
+		}
+
+		// resize 没给value参数时默认填充0
+		void resize(size_t n, const_reference value) {
+			if (n < size()) { // n小于size，erase多余元素，capacity不变
+				erase(begin_ + n, end_);
+			}
+			else { // n大于等于size，在后面insert不足的value
+				insert(end_, n - size(), value);
+			}
+		}
+		void resize(size_t n) {
+			resize(n, 0);
+		}
+
+		// reverse 翻转vector
+		void reverse() { 
+			iterator first = begin_, last = end_ - 1;
+			while (true)
+			{
+				if (first == last || first == last - 1)
+					return;
+				mycontainer::swap(*first, *last);
+				first++; last--;
+			}
+		}
+
+		//swap() 与另一个vector进行交换
+		void swap(vector& rightvector) {
+			if (this == &rightvector) return;
+			mycontainer::swap(begin_, rightvector.begin_);
+			mycontainer::swap(end_, rightvector.end_);
+			mycontainer::swap(capa_, rightvector.capa_);
+		}
+
 
 	private:
-		T* begin_;
-		T* end_;
-		T* capa_;
-		size_t initial_capacity = 8; // 未指定时/最小分配容量大小
+		iterator begin_;
+		iterator end_;
+		iterator capa_;
+		size_t initial_capacity = 16; // 未指定时/最小分配容量大小
 
+	private:
+		// 其它函数声明
+		void fill_in_all(const_reference value); // 填充所有空间为value (未完成)
+
+		void destroy_deallocate(); //将原内存空间中的对象析构，释放原内存空间
+		void reallocate_construct(size_t cap); // 重新分配cap大小的空间，将原空间中的内容拷贝过去，释放原空间
+		
 	};
 
 	//--------------------------函数定义---------------------------
@@ -204,6 +458,7 @@ namespace mycontainer {
 		}
 		return *this;
 		//新构造tmp后交换（未完成）
+
 	}
 
 	//移动赋值
@@ -222,7 +477,33 @@ namespace mycontainer {
 		return *this;
 	}
 
+	template<class T>
+	void vector<T>::fill_in_all(const_reference value) {
+		
+	}
+	
+	template<class T>
+	void vector<T>::destroy_deallocate() {
+		myallocator<T>::destroy(begin_, end_); 
+		myallocator<T>::deallocate(begin_, capacity()); 
+	}
 
+	template<class T>
+	void vector<T>::reallocate_construct(size_t cap) {
+		size_t n = size();
+		iterator newbegin_ = myallocator<T>::allocate(cap);
+		auto c = newbegin_;
+		for (auto i = begin_; i != end_; i++) {
+			myallocator<T>::construct(c, *i); //在新空间中构建对象
+			c++;
+		}
+		destroy_deallocate();
+		begin_ = newbegin_;
+		end_ = newbegin_ + n;
+		capa_ = newbegin_ + cap;
+	}
+
+	
 
 } //namespace mycontainer
 

@@ -1,41 +1,5 @@
 ﻿  MyContainer.cpp
-C:\Users\29672\Desktop\git_project\MyContainer\MyContainer\MyContainer\construct.h(31,1): error C2301: “->~Tx”的左边必须指向类/结构/联合
-C:\Users\29672\Desktop\git_project\MyContainer\MyContainer\MyContainer\construct.h(38): message : 查看对正在编译的函数 模板 实例化“void mycontainer::destory_one<Ty>(Ty *)”的引用
-          with
-          [
-              Ty=int
-          ]
-C:\Users\29672\Desktop\git_project\MyContainer\MyContainer\MyContainer\construct.h(46): message : 查看对正在编译的函数 模板 实例化“void mycontainer::destroy<Ty>(Ty *)”的引用
-          with
-          [
-              Ty=int
-          ]
-C:\Users\29672\Desktop\git_project\MyContainer\MyContainer\MyContainer\construct.h(53): message : 查看对正在编译的函数 模板 实例化“void mycontainer::destory_cat<Ty>(Ty *,Ty *)”的引用
-          with
-          [
-              Ty=int
-          ]
-C:\Users\29672\Desktop\git_project\MyContainer\MyContainer\MyContainer\myallocator.h(82): message : 查看对正在编译的函数 模板 实例化“void mycontainer::destroy<T>(Ty *,Ty *)”的引用
-          with
-          [
-              T=int,
-              Ty=int
-          ]
-C:\Users\29672\Desktop\git_project\MyContainer\MyContainer\MyContainer\myallocator.h(81): message : 在编译 类 模板 成员函数“void mycontainer::myallocator<T>::destroy(T *,T *)”时
-          with
-          [
-              T=int
-          ]
-C:\Users\29672\Desktop\git_project\MyContainer\MyContainer\MyContainer\vector.h(100): message : 查看对正在编译的函数 模板 实例化“void mycontainer::myallocator<T>::destroy(T *,T *)”的引用
-          with
-          [
-              T=int
-          ]
-C:\Users\29672\Desktop\git_project\MyContainer\MyContainer\MyContainer\vector.h(100): message : 查看对正在编译的 类 模板 实例化“mycontainer::myallocator<T>”的引用
-          with
-          [
-              T=int
-          ]
-C:\Users\29672\Desktop\git_project\MyContainer\MyContainer\MyContainer\vector.h(99): message : 在编译 类 模板 成员函数“mycontainer::vector<int>::~vector(void)”时
-C:\Users\29672\Desktop\git_project\MyContainer\MyContainer\MyContainer\MyContainer.cpp(15): message : 查看对正在编译的函数 模板 实例化“mycontainer::vector<int>::~vector(void)”的引用
-C:\Users\29672\Desktop\git_project\MyContainer\MyContainer\MyContainer\MyContainer.cpp(15): message : 查看对正在编译的 类 模板 实例化“mycontainer::vector<int>”的引用
+C:\Users\29672\Desktop\git_project\MyContainer\MyContainer\MyContainer\vector.h(388): warning C4715: “mycontainer::vector<int>::erase”: 不是所有的控件路径都返回值
+C:\Users\29672\Desktop\git_project\MyContainer\MyContainer\MyContainer\vector.h(374): warning C4715: “mycontainer::vector<int>::erase”: 不是所有的控件路径都返回值
+C:\Users\29672\Desktop\git_project\MyContainer\MyContainer\MyContainer\vector.h(282): warning C4715: “mycontainer::vector<int>::insert”: 不是所有的控件路径都返回值
+  MyContainer.vcxproj -> C:\Users\29672\Desktop\git_project\MyContainer\MyContainer\MyContainer\x64\Debug\MyContainer.exe

@@ -24,7 +24,7 @@ namespace mycontainer {
 
 	//析构对象-one
 	template <class Ty>
-	void destory_one(Ty* p)
+	void destroy_one(Ty* p)
 	{
 		if (p != nullptr)
 		{
@@ -35,22 +35,22 @@ namespace mycontainer {
 	template <class Ty>
 	void destroy(Ty* p)
 	{
-		destory_one(p);
+		destroy_one(p);
 	}
 
 	//析构对象-cat
 	template <class Ty>
-	void destory_cat(Ty* first, Ty* last)
+	void destroy_cat(Ty* first, Ty* last)
 	{
 		while (first != last) {
-			destroy(first); 
+			destroy(first);
 			first++;
 		}
 	}
 	template <class Ty>
 	void destroy(Ty* first, Ty* last)
 	{
-		destory_cat(first,last);
+		destroy_cat(first,last);
 	}
 
 } //namespace mycontainer

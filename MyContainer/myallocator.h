@@ -8,6 +8,10 @@ namespace mycontainer {
 	template<class T>
 	class myallocator {
 	public:
+
+		typedef T value_type;
+		typedef T* pointer;
+
 		//分配内存
 		static T* allocate();  //static关键字作用：所有对象共享，无需实例化。需在类外进行初始化
 		static T* allocate(size_t n); 
