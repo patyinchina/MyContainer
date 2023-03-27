@@ -1,2 +1,2 @@
 # MyContainer
-学习实现Alinshans的MyTinySTL的部分功能，主要是各类容器如vector、stack、queue等
+学习实现Alinshans的MyTinySTL的部分功能，主要是各类容器如vector等
