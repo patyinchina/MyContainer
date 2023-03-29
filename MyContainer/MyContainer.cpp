@@ -101,7 +101,7 @@ int main()
     //------------------------------------输出监测------------------------------------
     // 
     // cout << a4.capacity() << ' ' << a4.size() << endl;
-    // for (auto i : a4)  cout << i << endl;
+    for (auto i : a4)  cout << i << endl;
 
     return 0;
 }
