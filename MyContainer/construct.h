@@ -1,6 +1,8 @@
 #ifndef MYCONTAINER_CONSTRUCT_H_
 #define MYCONTAINER_CONSTRUCT_H_
-// construct 负责构造和析构对象
+
+// construct 在已分配的内存空间上构造对象
+// destroy 析构对象
 
 #include<new>
 
@@ -17,6 +19,12 @@ namespace mycontainer {
 	void construct(Ty1* p,const Ty2& value)
 	{
 		::new ((void*)p) Ty1(value);
+	}
+
+	template <class Ty, class... Args>
+	void construct(Ty* p, Args&&... args)
+	{
+		::new ((void*)p) Ty(mycontainer::forward<Args>(args)...);
 	}
 
 	//析构对象

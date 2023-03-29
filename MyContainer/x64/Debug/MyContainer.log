@@ -1,5 +1,7 @@
 ﻿  MyContainer.cpp
-C:\Users\29672\Desktop\git_project\MyContainer\MyContainer\MyContainer\vector.h(388): warning C4715: “mycontainer::vector<int>::erase”: 不是所有的控件路径都返回值
-C:\Users\29672\Desktop\git_project\MyContainer\MyContainer\MyContainer\vector.h(374): warning C4715: “mycontainer::vector<int>::erase”: 不是所有的控件路径都返回值
-C:\Users\29672\Desktop\git_project\MyContainer\MyContainer\MyContainer\vector.h(282): warning C4715: “mycontainer::vector<int>::insert”: 不是所有的控件路径都返回值
+C:\Users\29672\Desktop\git_project\MyContainer\MyContainer\MyContainer\vector.h(531): warning C4715: “mycontainer::vector<int>::erase”: 不是所有的控件路径都返回值
+C:\Users\29672\Desktop\git_project\MyContainer\MyContainer\MyContainer\vector.h(546): warning C4715: “mycontainer::vector<int>::erase”: 不是所有的控件路径都返回值
+C:\Users\29672\Desktop\git_project\MyContainer\MyContainer\MyContainer\vector.h(439): warning C4715: “mycontainer::vector<int>::insert”: 不是所有的控件路径都返回值
+C:\Users\29672\Desktop\git_project\MyContainer\MyContainer\MyContainer\vector.h(367): warning C4715: “mycontainer::vector<int>::emplace<int>”: 不是所有的控件路径都返回值
+C:\Users\29672\Desktop\git_project\MyContainer\MyContainer\MyContainer\vector.h(367): warning C4715: “mycontainer::vector<test2>::emplace<int,int>”: 不是所有的控件路径都返回值
   MyContainer.vcxproj -> C:\Users\29672\Desktop\git_project\MyContainer\MyContainer\MyContainer\x64\Debug\MyContainer.exe

@@ -2,6 +2,7 @@
 #define MYCONTAINER_MYALLOCATOR_H_
 
 //myallocator 负责处理内存的分配和释放
+
 #include "construct.h"
 
 namespace mycontainer {
@@ -23,9 +24,10 @@ namespace mycontainer {
 		//在已分配的内存空间上构造对象
 		static void construct(T* p);
 		static void construct(T* p, const T& value);
-		//static void construct(T* p, T&& value); (未完成)
+		static void construct(T* p, T&& value); 
 
-
+		template <class... Args>
+		static void construct(T* p, Args&&... args);
 
 		//析构对象
 		static void destroy(T* p);
@@ -74,6 +76,19 @@ namespace mycontainer {
 		mycontainer::construct(p, value);
 	}
 
+	//myallocator<T>::construct(T* p, T&& value)定义
+	template<class T>
+	void myallocator<T>::construct(T* p, T&& value) {
+		mycontainer::construct(p, mycontainer::move(value));
+	}
+
+	//
+	template<class T>
+	template <class... Args>
+	void myallocator<T>::construct(T* p, Args&&... args) {
+		mycontainer::construct(p, mycontainer::forward<Args>(args)...);
+	}
+
 	//myallocator<T>::deconstruct(T* p)定义
 	template<class T>
 	void myallocator<T>::destroy(T* p) {
@@ -88,8 +103,5 @@ namespace mycontainer {
 
 
 }//namespace mycontainer
-
-
-
 
 #endif //MYCONTAINER_MYALLOCATOR_H_
